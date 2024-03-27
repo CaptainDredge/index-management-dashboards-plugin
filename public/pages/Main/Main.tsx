@@ -141,6 +141,12 @@ const dataSourceEnabledPaths: string[] = [
   ROUTES.SPLIT_INDEX,
   ROUTES.ROLLOVER,
   ROUTES.INDEX_DETAIL,
+  ROUTES.INDEX_POLICIES,
+  ROUTES.MANAGED_INDICES,
+  ROUTES.CREATE_POLICY,
+  ROUTES.EDIT_POLICY,
+  ROUTES.CHANGE_POLICY,
+  ROUTES.POLICY_DETAILS,
   ROUTES.INDICES,
   ROUTES.CREATE_INDEX,
   ROUTES.ALIASES,
@@ -203,6 +209,9 @@ export default class Main extends Component<MainProps, MainState> {
     if (this.props.multiDataSourceEnabled && this.isDataSourceEnabledForPath(pathname)) {
       services.indexService = new IndexService(http, this.state.dataSourceId, this.props.multiDataSourceEnabled);
       services.commonService = new CommonService(http, this.state.dataSourceId, this.props.multiDataSourceEnabled);
+      services.managedIndexService = new ManagedIndexService(http, this.state.dataSourceId, this.props.multiDataSourceEnabled);
+      services.policyService = new PolicyService(http, this.state.dataSourceId, this.props.multiDataSourceEnabled);
+      services.notificationService = new NotificationService(http, this.state.dataSourceId, this.props.multiDataSourceEnabled);
     }
     return services;
   }
@@ -340,6 +349,8 @@ export default class Main extends Component<MainProps, MainState> {
                                 ROUTES.SPLIT_INDEX,
                                 ROUTES.ROLLOVER,
                                 ROUTES.INDEX_DETAIL,
+                                ROUTES.EDIT_POLICY,
+                                ROUTES.POLICY_DETAILS,
                                 ROUTES.REINDEX,
                               ]}
                               render={(props) => (
@@ -374,6 +385,11 @@ export default class Main extends Component<MainProps, MainState> {
                                 ROUTES.CREATE_TEMPLATE,
                                 ROUTES.COMPOSABLE_TEMPLATES,
                                 ROUTES.CREATE_COMPOSABLE_TEMPLATE,
+                                ROUTES.MANAGED_INDICES,
+                                ROUTES.INDEX_POLICIES,
+                                ROUTES.CREATE_POLICY,
+                                ROUTES.CHANGE_POLICY,
+                                ROUTES.TRANSFORMS,
                               ]}
                               render={() => (
                                 <DataSourceMenu

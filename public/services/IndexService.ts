@@ -86,7 +86,7 @@ export default class IndexService extends MDSEnabledClientService {
     };
   };
 
-  applyPolicy = async (indices: string[], policyId: string, queryObject: HttpFetchQuery): Promise<ServerResponse<ApplyPolicyResponse>> => {
+  applyPolicy = async (indices: string[], policyId: string, queryObject?: HttpFetchQuery): Promise<ServerResponse<ApplyPolicyResponse>> => {
     const body = { indices, policyId };
     queryObject = this.patchQueryObjectWithDataSourceId(queryObject);
     const url = `..${NODE_API.APPLY_POLICY}`;
@@ -96,7 +96,7 @@ export default class IndexService extends MDSEnabledClientService {
     })) as ServerResponse<ApplyPolicyResponse>;
   };
 
-  editRolloverAlias = async (index: string, alias: string, queryObject: HttpFetchQuery): Promise<ServerResponse<AcknowledgedResponse>> => {
+  editRolloverAlias = async (index: string, alias: string, queryObject?: HttpFetchQuery): Promise<ServerResponse<AcknowledgedResponse>> => {
     const body = { index, alias };
     queryObject = this.patchQueryObjectWithDataSourceId(queryObject);
     const url = `..${NODE_API.EDIT_ROLLOVER_ALIAS}`;
