@@ -6,10 +6,10 @@
 import _ from "lodash";
 import {
   IOpenSearchDashboardsResponse,
-  LegacyCallAPIOptions,
   OpenSearchDashboardsRequest,
   OpenSearchDashboardsResponseFactory,
   RequestHandlerContext,
+  ResponseError,
 } from "../../../../src/core/server";
 import { DeletePolicyParams, DeletePolicyResponse, GetPoliciesResponse, PutPolicyParams, PutPolicyResponse } from "../models/interfaces";
 import { PoliciesSort, ServerResponse } from "../models/types";
@@ -170,9 +170,9 @@ export default class PolicyService extends MDSEnabledClientService {
       };
 
       const callWithRequest = this.getClientBasedOnDataSource(context, request);
-      const getResponse = await callWithRequest("ism.getPolicies", params);
+      const getResponse: any = await callWithRequest("ism.getPolicies", params);
 
-      const policies: DocumentPolicy[] = getResponse.policies.map((p) => ({
+      const policies: DocumentPolicy[] = getResponse.policies.map((p: any) => ({
         seqNo: p._seq_no,
         primaryTerm: p._primary_term,
         id: p._id,

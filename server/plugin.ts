@@ -52,7 +52,7 @@ export class IndexPatternManagementPlugin implements Plugin<IndexManagementPlugi
     const dataStreamService = new DataStreamService(osDriver, dataSourceEnabled);
     const policyService = new PolicyService(osDriver, dataSourceEnabled);
     const managedIndexService = new ManagedIndexService(osDriver, dataSourceEnabled);
-    const rollupService = new RollupService(osDriver);
+    const rollupService = new RollupService(osDriver, dataSourceEnabled);
     const transformService = new TransformService(osDriver);
     const notificationService = new NotificationService(osDriver, dataSourceEnabled);
     const snapshotManagementService = new SnapshotManagementService(osDriver);
@@ -83,7 +83,7 @@ export class IndexPatternManagementPlugin implements Plugin<IndexManagementPlugi
     dataStreams(services, router, dataSourceEnabled);
     policies(services, router, dataSourceEnabled);
     managedIndices(services, router, dataSourceEnabled);
-    rollups(services, router);
+    rollups(services, router, dataSourceEnabled);
     transforms(services, router);
     notifications(services, router, dataSourceEnabled);
     snapshotManagement(services, router);

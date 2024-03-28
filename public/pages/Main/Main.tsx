@@ -157,6 +157,8 @@ const dataSourceEnabledPaths: string[] = [
   ROUTES.COMPOSABLE_TEMPLATES,
   ROUTES.CREATE_COMPOSABLE_TEMPLATE,
   ROUTES.REINDEX,
+  ROUTES.ROLLUPS,
+  ROUTES.CREATE_ROLLUP,
 ];
 
 export default class Main extends Component<MainProps, MainState> {
@@ -212,6 +214,7 @@ export default class Main extends Component<MainProps, MainState> {
       services.managedIndexService = new ManagedIndexService(http, this.state.dataSourceId, this.props.multiDataSourceEnabled);
       services.policyService = new PolicyService(http, this.state.dataSourceId, this.props.multiDataSourceEnabled);
       services.notificationService = new NotificationService(http, this.state.dataSourceId, this.props.multiDataSourceEnabled);
+      services.rollupService = new RollupService(http, this.state.dataSourceId, this.props.multiDataSourceEnabled);
     }
     return services;
   }
@@ -390,6 +393,8 @@ export default class Main extends Component<MainProps, MainState> {
                                 ROUTES.CREATE_POLICY,
                                 ROUTES.CHANGE_POLICY,
                                 ROUTES.TRANSFORMS,
+                                ROUTES.ROLLUPS,
+                                ROUTES.CREATE_ROLLUP,
                               ]}
                               render={() => (
                                 <DataSourceMenu
