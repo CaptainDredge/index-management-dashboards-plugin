@@ -92,7 +92,7 @@ describe("transformService spec", () => {
     const indexName = "index_1";
     const queryObject = {};
     const body = "";
-    await transformService.searchSampleData(indexName, queryObject, body);
+    await transformService.searchSampleData(indexName, body, queryObject);
 
     expect(httpClientMock.post).toHaveBeenCalledTimes(1);
     expect(httpClientMock.post).toHaveBeenCalledWith(`..${NODE_API._SEARCH_SAMPLE_DATA}/${indexName}`, { query: queryObject, body: body });
@@ -107,7 +107,7 @@ describe("transformService spec", () => {
         customer_gender: "FEMALE",
       },
     });
-    await transformService.searchSampleData(indexName, queryObject, body);
+    await transformService.searchSampleData(indexName, body, queryObject);
 
     expect(httpClientMock.post).toHaveBeenCalledTimes(1);
     expect(httpClientMock.post).toHaveBeenCalledWith(`..${NODE_API._SEARCH_SAMPLE_DATA}/${indexName}`, { query: queryObject, body: body });

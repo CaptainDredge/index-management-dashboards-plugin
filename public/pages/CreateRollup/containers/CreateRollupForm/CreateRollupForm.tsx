@@ -5,7 +5,7 @@
 
 import React, { ChangeEvent, Component, useContext } from "react";
 import { EuiButton, EuiButtonEmpty, EuiComboBoxOptionOption, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
-import { RouteComponentProps } from "react-router-dom";
+import { RouteComponentProps, useHistory } from "react-router-dom";
 import moment from "moment";
 import { RollupService } from "../../../../services";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
@@ -21,10 +21,15 @@ import CreateRollupStep3 from "../CreateRollupStep3";
 import CreateRollupStep4 from "../CreateRollupStep4";
 import { compareFieldItem, parseFieldOptions } from "../../utils/helpers";
 import { CoreServicesContext } from "../../../../components/core_services";
-import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
+import {
+  DataSourceMenuContext,
+  DataSourceMenuProperties,
+  DataSourceMenuReadOnlyContext,
+  DataSourceMenuReadOnlyProperties,
+} from "../../../../services/DataSourceMenuContext";
 import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
 
-interface CreateRollupFormProps extends RouteComponentProps, DataSourceMenuProperties {
+interface CreateRollupFormProps extends RouteComponentProps, DataSourceMenuProperties, DataSourceMenuReadOnlyProperties {
   rollupService: RollupService;
   indexService: IndexService;
 }
@@ -226,6 +231,14 @@ export class CreateRollupForm extends Component<CreateRollupFormProps, CreateRol
   _next() {
     let currentStep = this.state.currentStep;
     let error = false;
+
+    const dataSourceReadOnly = this.props.dataSourceReadOnly;
+    const setDataSourceReadOnly = this.props.setDataSourceReadOnly;
+
+    if (!dataSourceReadOnly) {
+      setDataSourceReadOnly(true);
+    }
+
     //Verification here
     if (currentStep == 1) {
       const { rollupId, sourceIndex, targetIndex } = this.state;
@@ -289,6 +302,14 @@ export class CreateRollupForm extends Component<CreateRollupFormProps, CreateRol
     let currentStep = this.state.currentStep;
     // If the current step is 2 or 3, then subtract one on "previous" button click
     currentStep = currentStep <= 1 ? 1 : currentStep - 1;
+    if (currentStep == 1) {
+      const dataSourceReadOnly = this.props.dataSourceReadOnly;
+      const setDataSourceReadOnly = this.props.setDataSourceReadOnly;
+
+      if (dataSourceReadOnly) {
+        setDataSourceReadOnly(false);
+      }
+    }
     this.setState({
       currentStep: currentStep,
     });
@@ -737,7 +758,8 @@ export class CreateRollupForm extends Component<CreateRollupFormProps, CreateRol
 }
 
 export default function (props: Omit<CreateRollupFormProps, keyof DataSourceMenuProperties>) {
+  const dataSourceReadOnlyProperties = useContext(DataSourceMenuReadOnlyContext);
   const dataSourceMenuProperties = useContext(DataSourceMenuContext);
   useUpdateUrlWithDataSourceProperties();
-  return <CreateRollupForm {...props} {...dataSourceMenuProperties} />;
+  return <CreateRollupForm {...props} {...dataSourceMenuProperties} {...dataSourceReadOnlyProperties} />;
 }

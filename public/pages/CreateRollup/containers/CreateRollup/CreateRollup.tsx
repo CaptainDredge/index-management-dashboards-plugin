@@ -36,7 +36,7 @@ interface CreateRollupProps extends RouteComponentProps, DataSourceMenuPropertie
   hasAggregation: boolean;
 }
 
-export class CreateRollup extends Component<CreateRollupProps> {
+export default class CreateRollup extends Component<CreateRollupProps> {
   render() {
     if (this.props.currentStep !== 1) {
       return null;
@@ -62,10 +62,4 @@ export class CreateRollup extends Component<CreateRollupProps> {
       </div>
     );
   }
-}
-
-export default function (props: CreateRollupProps) {
-  const dataSourceMenuProperties = useContext(DataSourceMenuContext);
-  useUpdateUrlWithDataSourceProperties();
-  return <CreateRollup {...props} {...dataSourceMenuProperties} />;
 }

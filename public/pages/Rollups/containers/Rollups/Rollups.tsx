@@ -74,6 +74,7 @@ export class Rollups extends MDSEnabledComponent<RollupsProps, RollupsState> {
     const { from, size, search, sortField, sortDirection } = getURLQueryParams(this.props.location);
 
     this.state = {
+      ...this.state,
       totalRollups: 0,
       from,
       size,
