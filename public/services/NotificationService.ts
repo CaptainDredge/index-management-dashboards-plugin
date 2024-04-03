@@ -12,15 +12,17 @@ import { MDSEnabledClientService } from "./MDSEnabledClientService";
 export default class NotificationService extends MDSEnabledClientService {
   getChannels = async (): Promise<ServerResponse<GetChannelsResponse>> => {
     let url = `..${NODE_API.CHANNELS}`;
-    const queryObject = this.patchQueryObjectWithDataSourceId();
-    const response = (await this.httpClient.get(url, { query: queryObject })) as ServerResponse<GetChannelsResponse>;
+    const query = this.patchQueryObjectWithDataSourceId();
+    const params = query ? { query } : {};
+    const response = (await this.httpClient.get(url, params)) as ServerResponse<GetChannelsResponse>;
     return response;
   };
 
   getChannel = async (channelId: string): Promise<ServerResponse<GetNotificationConfigsResponse>> => {
     let url = `..${NODE_API.CHANNELS}/${channelId}`;
-    const queryObject = this.patchQueryObjectWithDataSourceId();
-    const response = (await this.httpClient.get(url, { query: queryObject })) as ServerResponse<GetNotificationConfigsResponse>;
+    const query = this.patchQueryObjectWithDataSourceId();
+    const params = query ? { query } : {};
+    const response = (await this.httpClient.get(url, params)) as ServerResponse<GetNotificationConfigsResponse>;
     return response;
   };
 }

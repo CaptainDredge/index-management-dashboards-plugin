@@ -13,8 +13,9 @@ import { MDSEnabledClientService } from "./MDSEnabledClientService";
 export default class RollupService extends MDSEnabledClientService {
   getRollups = async (queryObject?: HttpFetchQuery): Promise<ServerResponse<GetRollupsResponse>> => {
     let url = `..${NODE_API.ROLLUPS}`;
-    queryObject = this.patchQueryObjectWithDataSourceId(queryObject);
-    const response = (await this.httpClient.get(url, { query: queryObject })) as ServerResponse<GetRollupsResponse>;
+    const query = this.patchQueryObjectWithDataSourceId(queryObject);
+    const params = query ? { query } : {};
+    const response = (await this.httpClient.get(url, params)) as ServerResponse<GetRollupsResponse>;
     return response;
   };
 
@@ -25,38 +26,41 @@ export default class RollupService extends MDSEnabledClientService {
     primaryTerm?: number
   ): Promise<ServerResponse<PutRollupResponse>> => {
     let url = `..${NODE_API.ROLLUPS}/${rollupId}`;
-    let queryObject = this.patchQueryObjectWithDataSourceId({ seqNo, primaryTerm });
-    const response = (await this.httpClient.put(url, { query: queryObject, body: JSON.stringify(rollup) })) as ServerResponse<
-      PutRollupResponse
-    >;
+    const query = this.patchQueryObjectWithDataSourceId({ seqNo, primaryTerm });
+    const params = query ? { query } : {};
+    const response = (await this.httpClient.put(url, { body: JSON.stringify(rollup), ...params })) as ServerResponse<PutRollupResponse>;
     return response;
   };
 
   getRollup = async (rollupId: string): Promise<ServerResponse<DocumentRollup>> => {
     const url = `..${NODE_API.ROLLUPS}/${rollupId}`;
-    const queryObject = this.patchQueryObjectWithDataSourceId();
-    const response = (await this.httpClient.get(url, { query: queryObject })) as ServerResponse<DocumentRollup>;
+    const query = this.patchQueryObjectWithDataSourceId();
+    const params = query ? { query } : {};
+    const response = (await this.httpClient.get(url, params)) as ServerResponse<DocumentRollup>;
     return response;
   };
 
   deleteRollup = async (rollupId: string): Promise<ServerResponse<boolean>> => {
     const url = `..${NODE_API.ROLLUPS}/${rollupId}`;
-    const queryObject = this.patchQueryObjectWithDataSourceId();
-    const response = (await this.httpClient.delete(url, { query: queryObject })) as ServerResponse<boolean>;
+    const query = this.patchQueryObjectWithDataSourceId();
+    const params = query ? { query } : {};
+    const response = (await this.httpClient.delete(url, params)) as ServerResponse<boolean>;
     return response;
   };
 
   startRollup = async (rollupId: string): Promise<ServerResponse<boolean>> => {
     const url = `..${NODE_API.ROLLUPS}/${rollupId}/_start`;
-    const queryObject = this.patchQueryObjectWithDataSourceId();
-    const response = (await this.httpClient.post(url, { query: queryObject })) as ServerResponse<boolean>;
+    const query = this.patchQueryObjectWithDataSourceId();
+    const params = query ? { query } : {};
+    const response = (await this.httpClient.post(url, params)) as ServerResponse<boolean>;
     return response;
   };
 
   stopRollup = async (rollupId: string): Promise<ServerResponse<boolean>> => {
     const url = `..${NODE_API.ROLLUPS}/${rollupId}/_stop`;
-    const queryObject = this.patchQueryObjectWithDataSourceId();
-    const response = (await this.httpClient.post(url, { query: queryObject })) as ServerResponse<boolean>;
+    const query = this.patchQueryObjectWithDataSourceId();
+    const params = query ? { query } : {};
+    const response = (await this.httpClient.post(url, params)) as ServerResponse<boolean>;
     return response;
   };
 
@@ -64,10 +68,9 @@ export default class RollupService extends MDSEnabledClientService {
   getMappings = async (index: string): Promise<ServerResponse<any>> => {
     const url = `..${NODE_API._MAPPINGS}`;
     const body = { index: index };
-    const queryObject = this.patchQueryObjectWithDataSourceId();
-    const response = (await this.httpClient.post(url, { query: queryObject, body: JSON.stringify(body) })) as ServerResponse<
-      GetFieldsResponse
-    >;
+    const query = this.patchQueryObjectWithDataSourceId();
+    const params = query ? { query } : {};
+    const response = (await this.httpClient.post(url, { body: JSON.stringify(body), ...params })) as ServerResponse<GetFieldsResponse>;
     return response;
   };
 }

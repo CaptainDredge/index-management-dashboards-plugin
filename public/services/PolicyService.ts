@@ -13,8 +13,9 @@ import { MDSEnabledClientService } from "./MDSEnabledClientService";
 export default class PolicyService extends MDSEnabledClientService {
   getPolicies = async (queryObject: HttpFetchQuery | undefined): Promise<ServerResponse<GetPoliciesResponse>> => {
     let url = `..${NODE_API.POLICIES}`;
-    queryObject = this.patchQueryObjectWithDataSourceId(queryObject);
-    const response = (await this.httpClient.get(url, { query: queryObject })) as ServerResponse<GetPoliciesResponse>;
+    const query = this.patchQueryObjectWithDataSourceId(queryObject);
+    const params = query ? { query } : {};
+    const response = (await this.httpClient.get(url, params)) as ServerResponse<GetPoliciesResponse>;
     return response;
   };
 
@@ -26,25 +27,25 @@ export default class PolicyService extends MDSEnabledClientService {
   ): Promise<ServerResponse<PutPolicyResponse>> => {
     let url = `..${NODE_API.POLICIES}/${policyId}`;
     let queryObject: HttpFetchQuery | undefined = { seqNo, primaryTerm };
-    queryObject = this.patchQueryObjectWithDataSourceId(queryObject);
-    console.log("PolicyService putPolicy queryObject: ", queryObject);
-    const response = (await this.httpClient.put(url, { query: queryObject, body: JSON.stringify(policy) })) as ServerResponse<
-      PutPolicyResponse
-    >;
+    const query = this.patchQueryObjectWithDataSourceId(queryObject);
+    const params = query ? { query } : {};
+    const response = (await this.httpClient.put(url, { body: JSON.stringify(policy), ...params })) as ServerResponse<PutPolicyResponse>;
     return response;
   };
 
   getPolicy = async (policyId: string): Promise<ServerResponse<DocumentPolicy>> => {
     const url = `..${NODE_API.POLICIES}/${policyId}`;
-    const queryObject = this.patchQueryObjectWithDataSourceId();
-    const response = (await this.httpClient.get(url, { query: queryObject })) as ServerResponse<DocumentPolicy>;
+    const query = this.patchQueryObjectWithDataSourceId();
+    const params = query ? { query } : {};
+    const response = (await this.httpClient.get(url, params)) as ServerResponse<DocumentPolicy>;
     return response;
   };
 
   deletePolicy = async (policyId: string): Promise<ServerResponse<boolean>> => {
     const url = `..${NODE_API.POLICIES}/${policyId}`;
-    const queryObject = this.patchQueryObjectWithDataSourceId();
-    const response = (await this.httpClient.delete(url, { query: queryObject })) as ServerResponse<boolean>;
+    const query = this.patchQueryObjectWithDataSourceId();
+    const params = query ? { query } : {};
+    const response = (await this.httpClient.delete(url, params)) as ServerResponse<boolean>;
     return response;
   };
 }
